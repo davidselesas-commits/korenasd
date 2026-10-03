@@ -1,1 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Featured Video</title>
 
+  <style>
+    :root {
+      --bg: #080914;
+      --panel: rgba(20, 23, 48, 0.82);
+      --purple: #a78bfa;
+      --blue: #38bdf8;
+      --text: #f8fafc;
+      --muted: #9ca3af;
+      --border: rgba(167, 139, 250, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.2), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.15), transparent 35%),
+        var(--bg);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background: var(--panel);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    .top-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 7px 12px;
+      border: 1px solid rgba(167, 139, 250, 0.28);
+      border-radius: 30px;
+      background: rgba(139, 92, 246, 0.1);
+      color: #c4b5fd;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 10px #4ade80;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+      letter-spacing: -0.8px;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Vertical 9:16 video area */
+    .player {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      background: #111827;
+      cursor: pointer;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .player:hover .thumbnail {
+      transform: scale(1.04);
+    }
+
+    .player-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(3, 7, 18, 0.75),
+        transparent 45%,
+        rgba(3, 7, 18, 0.12)
+      );
+      pointer-events: none;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.85);
+      box-shadow: 0 0 35px rgba(139, 92, 246, 0.45);
+      transition: 0.2s ease;
+    }
+
+    .player:hover .play-button {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: #8b5cf6;
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      margin-left: 5px;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 18px solid white;
+    }
+
+    .video-caption {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      left: 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      text-shadow: 0 2px 8px #000;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .stat-card {
+      padding: 13px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .stat-number {
+      display: block;
+      margin-bottom: 5px;
+      color: #c4b5fd;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .redirect-box {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 17px;
+      background: rgba(14, 165, 233, 0.06);
+    }
+
+    .redirect-title {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .countdown {
+      margin: 5px 0 13px;
+      color: var(--blue);
+      font-size: 32px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 9px;
+    }
+
+    button {
+      flex: 1;
+      min-height: 43px;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .continue-button {
+      color: #fff;
+      background: linear-gradient(100deg, #8b5cf6, #2563eb);
+    }
+
+    .cancel-button {
+      color: #d1d5db;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    @media (max-width: 380px) {
+      .container {
+        padding: 18px 14px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .player {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <div class="top-label">
+      <span class="status-dot"></span>
+      Featured content
+    </div>
+
+    <h1>Discover the Video</h1>
+    <p class="subtitle">
+      Tap the preview below to continue watching.
+    </p>
+
+    <div class="player" id="videoPlayer" role="button"
+         tabindex="0" aria-label="Open featured video">
+      <img
+        class="thumbnail"
+        id="thumbnail"
+        src="00298-08_1800.jpg"
+        alt="Video preview"
+      >
+
+      <div class="player-shade"></div>
+
+      <div class="play-button" aria-hidden="true">
+        <span class="play-icon"></span>
+      </div>
+
+      <div class="video-caption">
+        ▶ Tap to watch
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <span class="stat-number" id="watchingCount">—</span>
+        <span class="stat-label">Demo viewers</span>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-number" id="totalViews">—</span>
+        <span class="stat-label">Demo plays</span>
+      </div>
+    </div>
+
+    <section class="redirect-box" aria-live="polite">
+      <p class="redirect-title" id="redirectMessage">
+        Opening the next page in
+      </p>
+
+      <div class="countdown" id="countdown">5</div>
+
+      <div class="button-row">
+        <button class="continue-button" id="continueButton">
+          Continue now
+        </button>
+
+        <button class="cancel-button" id="cancelButton">
+          Cancel
+        </button>
+      </div>
+    </section>
+
+    <div class="footer">
+      Powered by videy.co
+    </div>
+  </main>
+
+  <script>
+    // Replace this with your destination URL.
+    const TARGET_URL = "https://www.profitableratecpmnetwork.com/nc5zmcjibj?key=267ff36a04b29602b5b5fbac97af086f";
+
+    const DELAY = 5;
+    const AUTO_REDIRECT = true;
+
+    let secondsLeft = DELAY;
+    let timer = null;
+    let redirectCancelled = false;
+
+    const countdownElement = document.getElementById("countdown");
+    const messageElement = document.getElementById("redirectMessage");
+    const cancelButton = document.getElementById("cancelButton");
+    const continueButton = document.getElementById("continueButton");
+    const player = document.getElementById("videoPlayer");
+
+    function openDestination() {
+      if (!TARGET_URL || TARGET_URL === "PASTE_YOUR_REDIRECT_URL_HERE") {
+        messageElement.textContent = "Set your destination URL in the script.";
+        clearInterval(timer);
+        return;
+      }
+
+      window.location.href = TARGET_URL;
+    }
+
+    function updateCountdown() {
+      countdownElement.textContent = secondsLeft;
+
+      if (secondsLeft <= 0) {
+        clearInterval(timer);
+
+        if (!redirectCancelled && AUTO_REDIRECT) {
+          openDestination();
+        } else {
+          messageElement.textContent = "Countdown complete.";
+        }
+
+        return;
+      }
+
+      secondsLeft--;
+    }
+
+    function startCountdown() {
+      if (!AUTO_REDIRECT) {
+        messageElement.textContent = "Ready when you are.";
+        countdownElement.textContent = "—";
+        return;
+      }
+
+      updateCountdown();
+      timer = setInterval(updateCountdown, 1000);
+    }
+
+    cancelButton.addEventListener("click", function () {
+      redirectCancelled = true;
+      clearInterval(timer);
+
+      messageElement.textContent = "Automatic redirect cancelled.";
+      countdownElement.textContent = "×";
+      cancelButton.disabled = true;
+      cancelButton.style.opacity = "0.5";
+    });
+
+    continueButton.addEventListener("click", openDestination);
+    player.addEventListener("click", openDestination);
+
+    player.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openDestination();
+      }
+    });
+
+    // Demo-only randomized counters.
+    function randomInteger(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const watchingElement = document.getElementById("watchingCount");
+    const viewsElement = document.getElementById("totalViews");
+
+    let demoViewers = randomInteger(9500, 10500);
+    let demoPlays = randomInteger(120000, 180000);
+
+    function renderStats() {
+      watchingElement.textContent = demoViewers.toLocaleString("en-US");
+      viewsElement.textContent = demoPlays.toLocaleString("en-US");
+    }
+
+    renderStats();
+
+    setInterval(function () {
+      demoViewers += randomInteger(-8, 12);
+      demoViewers = Math.max(0, demoViewers);
+
+      demoPlays += randomInteger(1, 5);
+      renderStats();
+    }, 4000);
+
+    startCountdown();
+  </script>
+</body>
+</html>
