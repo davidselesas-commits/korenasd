@@ -1,19 +1,21 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Featured Video</title>
+  <meta name="theme-color" content="#090817">
+  <meta name="description" content="Watch featured videos on videy.co">
+  <title>videy.co</title>
 
   <style>
     :root {
-      --bg: #080914;
-      --panel: rgba(20, 23, 48, 0.82);
+      --bg: #090817;
+      --panel: #15142a;
       --purple: #a78bfa;
       --blue: #38bdf8;
-      --text: #f8fafc;
-      --muted: #9ca3af;
-      --border: rgba(167, 139, 250, 0.2);
+      --white: #f8fafc;
+      --muted: #a1a1aa;
     }
 
     * {
@@ -21,17 +23,17 @@
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      padding: 32px 16px;
+      margin: 0;
+      padding: 28px 16px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-family: Inter, Arial, sans-serif;
-      color: var(--text);
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--white);
       background:
-        radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.2), transparent 35%),
-        radial-gradient(circle at 85% 80%, rgba(14, 165, 233, 0.15), transparent 35%),
+        radial-gradient(circle at 10% 10%, #31205c 0, transparent 35%),
+        radial-gradient(circle at 90% 90%, #103450 0, transparent 35%),
         var(--bg);
     }
 
@@ -39,42 +41,54 @@
       width: 100%;
       max-width: 460px;
       padding: 24px;
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      background: var(--panel);
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(18px);
       text-align: center;
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      border-radius: 26px;
+      background: rgba(21, 20, 42, 0.9);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(18px);
     }
 
-    .top-label {
+    .brand {
+      margin-bottom: 18px;
+      color: var(--white);
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .brand span {
+      color: var(--purple);
+    }
+
+    .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 7px;
+      margin-bottom: 13px;
       padding: 7px 12px;
-      border: 1px solid rgba(167, 139, 250, 0.28);
+      border: 1px solid rgba(167, 139, 250, 0.25);
       border-radius: 30px;
-      background: rgba(139, 92, 246, 0.1);
       color: #c4b5fd;
-      font-size: 11px;
+      background: rgba(139, 92, 246, 0.1);
+      font-size: 10px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.3px;
       text-transform: uppercase;
     }
 
-    .status-dot {
+    .live-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
       background: #4ade80;
-      box-shadow: 0 0 10px #4ade80;
+      box-shadow: 0 0 9px #4ade80;
     }
 
     h1 {
       margin: 0 0 8px;
       font-size: 25px;
-      letter-spacing: -0.8px;
+      letter-spacing: -0.7px;
     }
 
     .subtitle {
@@ -84,41 +98,41 @@
       line-height: 1.5;
     }
 
-    /* Vertical 9:16 video area */
+    /* Vertical video preview */
     .player {
       position: relative;
       width: 100%;
-      max-width: 340px;
+      max-width: 330px;
       aspect-ratio: 9 / 16;
       margin: 0 auto;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.13);
       border-radius: 20px;
       background: #111827;
       cursor: pointer;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 12px 38px rgba(0, 0, 0, 0.45);
     }
 
     .thumbnail {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: cover;
-      transition: transform 0.5s ease;
+      transition: transform 0.45s ease;
     }
 
     .player:hover .thumbnail {
       transform: scale(1.04);
     }
 
-    .player-shade {
+    .shade {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to top,
-        rgba(3, 7, 18, 0.75),
+        rgba(0, 0, 0, 0.7),
         transparent 45%,
-        rgba(3, 7, 18, 0.12)
+        rgba(0, 0, 0, 0.12)
       );
       pointer-events: none;
     }
@@ -132,16 +146,15 @@
       display: grid;
       place-items: center;
       transform: translate(-50%, -50%);
-      border: 1px solid rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 50%;
-      background: rgba(139, 92, 246, 0.85);
-      box-shadow: 0 0 35px rgba(139, 92, 246, 0.45);
-      transition: 0.2s ease;
+      background: linear-gradient(135deg, #a855f7, #2563eb);
+      box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
+      transition: transform 0.2s ease;
     }
 
     .player:hover .play-button {
       transform: translate(-50%, -50%) scale(1.1);
-      background: #8b5cf6;
     }
 
     .play-icon {
@@ -153,7 +166,7 @@
       border-left: 18px solid white;
     }
 
-    .video-caption {
+    .preview-label {
       position: absolute;
       right: 14px;
       bottom: 14px;
@@ -171,8 +184,8 @@
       margin: 18px 0;
     }
 
-    .stat-card {
-      padding: 13px 8px;
+    .stat {
+      padding: 14px 8px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 15px;
       background: rgba(255, 255, 255, 0.045);
@@ -183,7 +196,7 @@
       margin-bottom: 5px;
       color: #c4b5fd;
       font-size: 20px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .stat-label {
@@ -199,21 +212,21 @@
       background: rgba(14, 165, 233, 0.06);
     }
 
-    .redirect-title {
+    .redirect-message {
       margin: 0 0 8px;
       font-size: 13px;
       font-weight: 700;
     }
 
     .countdown {
-      margin: 5px 0 13px;
+      margin: 5px 0 14px;
       color: var(--blue);
       font-size: 32px;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
     }
 
-    .button-row {
+    .buttons {
       display: flex;
       gap: 9px;
     }
@@ -234,20 +247,20 @@
       transform: translateY(-1px);
     }
 
-    .continue-button {
-      color: #fff;
+    .continue {
+      color: white;
       background: linear-gradient(100deg, #8b5cf6, #2563eb);
     }
 
-    .cancel-button {
-      color: #d1d5db;
+    .cancel {
+      color: #e5e7eb;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.06);
     }
 
     .footer {
       margin-top: 20px;
-      color: #6b7280;
+      color: #71717a;
       font-size: 11px;
     }
 
@@ -259,89 +272,112 @@
       h1 {
         font-size: 22px;
       }
-
-      .player {
-        max-width: 100%;
-      }
     }
   </style>
 </head>
 
 <body>
   <main class="container">
-    <div class="top-label">
-      <span class="status-dot"></span>
-      Featured content
+    <div class="brand">videy<span>.co</span></div>
+
+    <div class="eyebrow">
+      <span class="live-dot"></span>
+      Featured video
     </div>
 
-    <h1>Discover the Video</h1>
+    <h1>Watch the Video</h1>
     <p class="subtitle">
-      Tap the preview below to continue watching.
+      Tap the preview to continue watching.
     </p>
 
-    <div class="player" id="videoPlayer" role="button"
-         tabindex="0" aria-label="Open featured video">
+    <div
+      class="player"
+      id="videoPlayer"
+      role="button"
+      tabindex="0"
+      aria-label="Open video"
+    >
       <img
         class="thumbnail"
         id="thumbnail"
-        src="image1.jpg"
-        alt="Video preview"
+        src=""
+        alt="Video thumbnail"
       >
 
-      <div class="player-shade"></div>
+      <div class="shade"></div>
 
       <div class="play-button" aria-hidden="true">
         <span class="play-icon"></span>
       </div>
 
-      <div class="video-caption">
-        ▶ Tap to watch
-      </div>
+      <div class="preview-label">▶ Tap to watch</div>
     </div>
 
     <div class="stats">
-      <div class="stat-card">
+      <div class="stat">
         <span class="stat-number" id="watchingCount">—</span>
         <span class="stat-label">Demo viewers</span>
       </div>
 
-      <div class="stat-card">
+      <div class="stat">
         <span class="stat-number" id="totalViews">—</span>
         <span class="stat-label">Demo plays</span>
       </div>
     </div>
 
     <section class="redirect-box" aria-live="polite">
-      <p class="redirect-title" id="redirectMessage">
-        Opening the next page in
+      <p class="redirect-message" id="redirectMessage">
+        Redirecting in
       </p>
 
       <div class="countdown" id="countdown">5</div>
 
-      <div class="button-row">
-        <button class="continue-button" id="continueButton">
+      <div class="buttons">
+        <button class="continue" id="continueButton">
           Continue now
         </button>
 
-        <button class="cancel-button" id="cancelButton">
+        <button class="cancel" id="cancelButton">
           Cancel
         </button>
       </div>
     </section>
 
     <div class="footer">
-      Powered by videy.co
+      © videy.co
     </div>
   </main>
 
   <script>
-    // Replace this with your destination URL.
-    const TARGET_URL = "https://www.profitableratecpmnetwork.com/nc5zmcjibj?key=267ff36a04b29602b5b5fbac97af086f";
+    // Destination URL: replace with your actual target.
+    const TARGET_URL = "PASTE_YOUR_REDIRECT_URL_HERE";
 
-    const DELAY = 5;
+    // Thumbnail images hosted in your GitHub repository.
+    const thumbnails = [
+      "https://raw.githubusercontent.com/davidselesas-commits/korenasd/main/image1.jpg",
+      "https://raw.githubusercontent.com/davidselesas-commits/korenasd/main/image2.jpg",
+      "https://raw.githubusercontent.com/davidselesas-commits/korenasd/main/image3.jpg",
+      "https://raw.githubusercontent.com/davidselesas-commits/korenasd/main/image4.jpg",
+      "https://raw.githubusercontent.com/davidselesas-commits/korenasd/main/image5.jpg"
+    ];
+
+    const DELAY_SECONDS = 5;
     const AUTO_REDIRECT = true;
 
-    let secondsLeft = DELAY;
+    // Select one thumbnail randomly when the page loads.
+    const randomThumbnail =
+      thumbnails[Math.floor(Math.random() * thumbnails.length)];
+
+    const thumbnailElement = document.getElementById("thumbnail");
+    thumbnailElement.src = randomThumbnail;
+
+    // Optional fallback if the selected image cannot be loaded.
+    thumbnailElement.onerror = function () {
+      this.onerror = null;
+      this.src = thumbnails[0];
+    };
+
+    let secondsLeft = DELAY_SECONDS;
     let timer = null;
     let redirectCancelled = false;
 
@@ -352,8 +388,12 @@
     const player = document.getElementById("videoPlayer");
 
     function openDestination() {
-      if (!TARGET_URL || TARGET_URL === "PASTE_YOUR_REDIRECT_URL_HERE") {
-        messageElement.textContent = "Set your destination URL in the script.";
+      if (
+        !TARGET_URL ||
+        TARGET_URL === "PASTE_YOUR_REDIRECT_URL_HERE"
+      ) {
+        messageElement.textContent =
+          "Please set the destination URL in the script.";
         clearInterval(timer);
         return;
       }
@@ -410,27 +450,32 @@
       }
     });
 
-    // Demo-only randomized counters.
+    // Demo-only counters; these are not live analytics.
     function randomInteger(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    const watchingElement = document.getElementById("watchingCount");
-    const viewsElement = document.getElementById("totalViews");
-
     let demoViewers = randomInteger(9500, 10500);
     let demoPlays = randomInteger(120000, 180000);
 
+    const watchingElement = document.getElementById("watchingCount");
+    const viewsElement = document.getElementById("totalViews");
+
     function renderStats() {
-      watchingElement.textContent = demoViewers.toLocaleString("en-US");
-      viewsElement.textContent = demoPlays.toLocaleString("en-US");
+      watchingElement.textContent =
+        demoViewers.toLocaleString("en-US");
+
+      viewsElement.textContent =
+        demoPlays.toLocaleString("en-US");
     }
 
     renderStats();
 
     setInterval(function () {
-      demoViewers += randomInteger(-8, 12);
-      demoViewers = Math.max(0, demoViewers);
+      demoViewers = Math.max(
+        0,
+        demoViewers + randomInteger(-8, 12)
+      );
 
       demoPlays += randomInteger(1, 5);
       renderStats();
@@ -440,3 +485,4 @@
   </script>
 </body>
 </html>
+```
